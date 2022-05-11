@@ -12,23 +12,24 @@ public class Main {
         Rick j1 = new Rick();
         Morty j2 = new Morty();
         int nuevo = 0;
+        int cont = 0;
         int eleccion;
         int Filas, Columnas, Opcion = 9, dado;
-        Scanner leer = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
         Random rand = new Random();
 
         //pedir Filas y Columnas
         System.out.println("Ingrese el numero de filas: ");
-        Filas = leer.nextInt();
+        Filas = sc.nextInt();
         System.out.println("Ingrese el numero de Columnas: ");
-        Columnas = leer.nextInt();
+        Columnas = sc.nextInt();
 
         // Pedir semillas
         int cantSemillas = 9999;
         while (cantSemillas > ((Filas * Columnas) / 2)) {
             System.out.println("\nla cantidad tiene que ser menor o igual a " + (Filas * Columnas)*0.5);
             System.out.println("Cuantas semillas hay en el tablero: ");
-            cantSemillas = leer.nextInt();
+            cantSemillas = sc.nextInt();
         }
 
         // Pedir portales
@@ -36,16 +37,16 @@ public class Main {
         while (cantPortales > ((Filas * Columnas) / 2)) {
             System.out.println("\nla cantidad tiene que ser menor o igual a " + (Filas * Columnas) / 2);
             System.out.println("Cuantos portales hay en el tablero: ");
-            cantPortales = leer.nextInt();
+            cantPortales = sc.nextInt();
         }
 
         //Crear Jugadores
         String player1, player2;
         System.out.println("Ingrese el nombre del jugador 1 (Rick):");
-        leer.nextLine();
-        player1 = leer.nextLine();
+        sc.nextLine();
+        player1 = sc.nextLine();
         System.out.println("Ingrese el nombre del jugador 2 (Morty):");
-        player2 = leer.nextLine();
+        player2 = sc.nextLine();
 
         j1.setNombre(player1);
         j1.setPocicion(rand.nextInt((Filas * Columnas) - 1) + 1);
@@ -102,20 +103,36 @@ public class Main {
         }
 
         //menu opciones
+        
         int turno = 1;
         System.out.println("\n--------------------------------------------------------------------------------\n"
                          + "------------------------QUE EMPIECE EL JUEGO------------------------------------\n"
                          + "--------------------------------------------------------------------------------\n");
         while (Opcion != 0) {
+        	for(int a = 0; a > semillas.length; a++) {
+        		cont += semillas[i];
+        	}
+        	if(cont == 0) {
+        		int puntaje1 = j1.getPuntos()*120;
+        		int puntaje2 = j2.getPuntos()*120;
+        		if(puntaje1 > puntaje2 ) {
+        			System.out.println("El juego ha terminado");
+        			System.out.println("El jugador "+j1.getNombre()+"Ha ganado con: "+puntaje1);
+        		}
+        		if(puntaje2 > puntaje1) {
+        			System.out.println("El juego ha terminado");
+        			System.out.println("El jugador " + j2.getNombre() + "ha ganado: " + puntaje2);
+        		}
+        	}
             if(turno == 1){
-                System.out.println("\n Es el turno de (Rick!)."+j1.getNombre()+" ¿Que deseas hacer?: \n"
+                System.out.println("\nEs el turno de Rick: "+j1.getNombre()+" ¿Que deseas hacer?: \n"
                     + "1. Tirar dado \n"
                     + "2. Ver tablero \n"
                     + "3. ver enlaces \n"
                     + "4. Marcador \n"
                     + "0. salir \n");
             }else{
-                System.out.println("\n Es el turno de (Morty!)."+j2.getNombre()+" ¿Que deseas hacer?: \n"
+                System.out.println("\nEs el turno de Morty: "+j2.getNombre()+" ¿Que deseas hacer?: \n"
                     + "1. Tirar dado \n"
                     + "2. Ver tablero \n"
                     + "3. ver enlaces \n"
@@ -124,15 +141,15 @@ public class Main {
             }
             
 
-            Opcion = leer.nextInt();
+            Opcion = sc.nextInt();
             switch (Opcion) {
                 case 1:
                     dado = rand.nextInt(6);
                     if (turno == 1) {
-                        System.out.println("(Rick). " + j1.getNombre() + " te salio: " + dado);
+                        System.out.println("Rick: " + j1.getNombre() + " te salio: " + dado);
                         System.out.println("1. quieres avanzar \n"
-                                + "2. quiere retroceder");
-                        eleccion = leer.nextInt();
+                                + "2. quieres retroceder");
+                        eleccion = sc.nextInt();
                         if (eleccion == 1) {
                             if ((j1.getPocicion() + dado) > (Filas * Columnas)) {
                                 dado = (dado + j1.getPocicion()) - (Filas * Columnas);
@@ -164,10 +181,10 @@ public class Main {
                         }
                         turno = 2;
                     } else {
-                        System.out.println("(Morty) " + j2.getNombre() + " te salio: " + dado);
+                        System.out.println("Morty: " + j2.getNombre() + " te salio: " + dado);
                         System.out.println("1. quieres avanzar. \n"
-                                + "2. quiere retroceder");
-                        eleccion = leer.nextInt();
+                                + "2. quieres retroceder");
+                        eleccion = sc.nextInt();
                         if (eleccion == 1) {
                             if ((j2.getPocicion() + dado) > (Filas * Columnas)) {
                                 dado = (dado + j2.getPocicion()) - (Filas * Columnas);
@@ -209,9 +226,9 @@ public class Main {
                     listaNodos.mostrarPortales(Columnas);
                     break; 
                 case 4:
-                    System.out.println("(Rick). " + j1.getNombre() + " tu puntaje va: " + j1.getPuntos() + " Semillas");
-                    System.out.println("(Morty). " + j2.getNombre() + " tu puntaje va: " + j2.getPuntos() + " Semillas");
-                    break; // break es opcional
+                    System.out.println("Rick: " + j1.getNombre() + " tu puntaje va: " + j1.getPuntos() + " Semillas");
+                    System.out.println("Morty: " + j2.getNombre() + " tu puntaje va: " + j2.getPuntos() + " Semillas");
+                    break;
                 default:
             }
         }
